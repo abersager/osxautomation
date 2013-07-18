@@ -2,11 +2,11 @@
 #include <string.h>
 #include <Carbon/Carbon.h>
 #include "osxautomation.h"
+#include "easing.h"
 
 #define IS_CMD( x, y ) strncmp( x, y, strlen( y ) ) == 0
 #define CMD_STRING_MAXLEN 256
-#define MOUSE_SPEED 4000 // bigger = slower
-#define MOUSE_RESOLUTION 2.5 //how much to move the cursor each interval
+#define MOUSE_FPS 60
 #define TYPOMATIC_RATE 100000
 
 #define NO_MOUSE_BUTTON 0
@@ -54,7 +54,7 @@ void processCommand(const char *cmd) {
 
     print_msg("Moving mouse.");
     sscanf(cmd, "mousemove %d %d", &tmpx, &tmpy);
-    mouseMoveTo(tmpx, tmpy, 1);
+    mouseMoveTo(tmpx, tmpy, 0.7);
 
   } else if (IS_CMD(cmd, "mousedown")) {
 
@@ -210,63 +210,37 @@ void mouseMove(int posX, int posY) {
   }
 }
 
-void mouseMoveTo(int posX, int posY, float speed) {
+void mouseMoveTo(int posX, int posY, float duration) {
+    
+    int sleep_duration = 1000000 / MOUSE_FPS;
+    
 	CGPoint currLoc = mouseLoc();
 	CGPoint destLoc = { .x = posX, .y = posY };
-	float x = currLoc.x;
-	float y = currLoc.y;
-	float xrat, yrat;
-	
-	int diffX = abs(currLoc.x - destLoc.x);
-	int diffY = abs(currLoc.y - destLoc.y);
-	int dirX = currLoc.x > destLoc.x ? -1 : 1;
-	int dirY = currLoc.y > destLoc.y ? -1 : 1;
+    float x_base = currLoc.x;
+    float y_base = currLoc.y;
+    
+	int diffX = destLoc.x - x_base;
+	int diffY = destLoc.y - y_base;
 
-  if (diffX == 0 && diffY == 0) {
-    return;
-  }
-
-	if (diffX > diffY) {
-    xrat = MOUSE_RESOLUTION * dirX;
-    if (diffY == 0) {
-      yrat = 0;
-    } else {
-      yrat = (((float)diffY / diffX) * dirY) * MOUSE_RESOLUTION;
-    }
-	} else {
-    yrat = MOUSE_RESOLUTION * dirY;
-    if (diffX == 0) {
-      xrat = 0;
-    } else {
-      xrat = (((float)diffX / diffY) * dirX) * MOUSE_RESOLUTION;
-    }
-	}
-
-  int xArrived = 0, yArrived = 0, diff;
-  float accelerant;
-  while (!xArrived && !yArrived) {
-    diffX = abs(destLoc.x - x);
-    diffY = abs(destLoc.y - y);
-    diff = diffX > diffY ? diffX : diffY;
-    accelerant = diff > 70 ? diff / 40 : (diff > 40 ? diff / 20 : 1);
-
-    if (!xArrived && diffX < abs(xrat)) {
-      xArrived = 1;
-      x = destLoc.x;
-    } else {
-      x += xrat * accelerant;
+    if (diffX == 0 && diffY == 0) {
+        return;
     }
 
-    if (!yArrived && diffY < abs(yrat)) {
-      yArrived = 1;
-      y = destLoc.y;
-    } else {
-      y += yrat * accelerant;
+    float p;
+    float t_step = 1 / ((float)MOUSE_FPS * duration);
+    
+	float x = x_base;
+	float y = y_base;
+    
+    for (float t = 0.0; t <= 1.0; t += t_step) {
+        p = SineEaseInOut(t);
+        x = x_base + p * diffX;
+        y = y_base + p * diffY;
+        
+        mouseMove((int)x, (int)y);
+        usleep(sleep_duration);
     }
-
-    mouseMove((int)x, (int)y);
-    usleep((int)(speed * (MOUSE_SPEED * MOUSE_RESOLUTION)));
-  }
+    
 }
 
 /* MOUSE CLICKING */

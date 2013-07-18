@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7CDC57CE0D5FC5F1008D17CC /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CDC57CD0D5FC5F1008D17CC /* Carbon.framework */; };
+		7FFD7F3B1796C0B6005FF50F /* easing.c in Sources */ = {isa = PBXBuildFile; fileRef = 7FFD7F391796C0B6005FF50F /* easing.c */; };
 		8DD76FAC0486AB0100D96B5E /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 08FB7796FE84155DC02AAC07 /* main.c */; settings = {ATTRIBUTES = (); }; };
 		8DD76FB00486AB0100D96B5E /* osxautomation.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = C6A0FF2C0290799A04C91782 /* osxautomation.1 */; };
 /* End PBXBuildFile section */
@@ -29,6 +30,8 @@
 		08FB7796FE84155DC02AAC07 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		7C6D43B70D5D1E6000403199 /* osxautomation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = osxautomation.h; sourceTree = "<group>"; };
 		7CDC57CD0D5FC5F1008D17CC /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
+		7FFD7F391796C0B6005FF50F /* easing.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = easing.c; path = easing/AHEasing/easing.c; sourceTree = "<group>"; };
+		7FFD7F3A1796C0B6005FF50F /* easing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = easing.h; path = easing/AHEasing/easing.h; sourceTree = "<group>"; };
 		8DD76FB20486AB0100D96B5E /* osxautomation */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = osxautomation; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6A0FF2C0290799A04C91782 /* osxautomation.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = osxautomation.1; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -61,6 +64,8 @@
 			children = (
 				7C6D43B70D5D1E6000403199 /* osxautomation.h */,
 				08FB7796FE84155DC02AAC07 /* main.c */,
+				7FFD7F391796C0B6005FF50F /* easing.c */,
+				7FFD7F3A1796C0B6005FF50F /* easing.h */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -137,6 +142,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8DD76FAC0486AB0100D96B5E /* main.c in Sources */,
+				7FFD7F3B1796C0B6005FF50F /* easing.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
